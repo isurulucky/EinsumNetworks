@@ -417,6 +417,7 @@ class NormalArray(ExponentialFamilyArray):
 
     def expectation_to_natural(self, phi):
         var = phi[..., self.num_dims:] - phi[..., 0:self.num_dims] ** 2
+        var = torch.clamp(var, min=self.min_var)
         theta1 = phi[..., 0:self.num_dims] / var
         theta2 = - 1. / (2. * var)
         return torch.cat((theta1, theta2), -1)
